@@ -1,0 +1,59 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Usuario",
+    "description": "Cadastro de Usuario",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "operacao": {
+            "type": "string",
+            "enum": ["incluir", "editar", "editarEmail", "editarSenha"]     
+        },
+        "email": {
+            "type": "string",
+            "description": "Email do usuário",
+            "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+            "maxLength": 100
+        },
+        "senha": {
+            "type": "string",
+            "description": "Senha do usuário",
+            "pattern": "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,100}$",
+            "minLength": 8,
+            "maxLength": 100
+        },
+        "tema": {
+            "type": "string",
+            "enum": ["system", "dark", "light"]
+        },
+        "nome": {
+            "type": "string",
+            "description": "Nome do usuário",
+            "maxLength": 30
+        },
+        "sobreNome": {
+            "type": "string",
+            "description": "Sobrenome do usuário",
+            "maxLength": 30   
+        },
+        "avatar": {
+            "type": "string",
+            "description": "Avatar do usuário"
+        }
+    },
+    "required": ["operacao"],
+    "if": { "properties": { "operacao": { "const": "incluir" } } },
+    "then": { "required": ["email", "senha", "tema", "nome", "sobreNome"] },
+    "else": { 
+        "if": {  "properties": { "operacao": { "const": "editar" } } },
+        "then": { "required": ["nome", "sobreNome"] },
+        "else": {
+            "if": { "properties": { "operacao": { "const": "editarEmail" } } },
+            "then": { "required": ["email"] },
+            "else": { 
+                "if": { "properties": { "operacao": { "const": "editarSenha" } } },
+                "then": { "required": ["senha"] }
+            }      
+        }     
+    }
+}
