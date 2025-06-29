@@ -3,10 +3,10 @@
     express             -   Servidor HTTP para API
     express-rate-limit  -   Controle de acessos, força bruta por exemplo
     rate-limit-redis    -   Controle para trabalhar com redis, usar por exemplo um bloqueio de banimento armazenando os IPs
-    ioredis             -   Redis em si
+    ioredis             -   Controle do redis
     knex                -   Comunicação com banco de dados
-    mysql2              -   lib do mysql ( no projeto original continha a mysql e a mysql2 pelo que vi é uma evolução da 1, não é necessário as duas para rodar o projeto inclusive segundo foruns pode gerar conflitos ) 
-    cors                -   Valida a origem das requisições AJAX, se não estiver setado qualquer aplicativo poderia fazer requisições (Não bloqueia o acesso a API se pessoa mau intencionada souber o endereço)
+    mysql2              -   lib do mysql
+    cors                -   Valida a origem das requisições
     jsonwebtoken        -   Utilitário para geração do token JWT mais moderno e seguro
     bcrypt, crypto      -   Utilitarios de criptografia
     moment              -   Manipulação de data e hora
