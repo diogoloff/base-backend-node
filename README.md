@@ -70,6 +70,8 @@ Essas rotas exigem o envio do token JWT no header `Authorization: Bearer <token>
 ├── utils/            # Helpers e funções utilitárias
 ```
 
+> ⚠️ **Atenção:** Os arquivos da pasta tasks, eles estão embutidos na aplicação, porem seria ideal os mesmos serem serviços a parte, visto que em caso de volume poderiam gerar alguma lentidão na aplicação.
+
 ---
 
 ## 🛢 Banco de Dados
