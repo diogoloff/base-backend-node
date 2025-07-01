@@ -2,6 +2,8 @@
 
 Este repositório apresenta um projeto backend com autenticação de usuários completo, desenvolvido em Node.js com Express. Ele pode ser utilizado como base para novas aplicações que exijam controle de acesso, segurança com JWT, e persistência de sessões.
 
+- Quer entender um pouco mais veja o video no meu canal [youtube](https://youtu.be/wzqfz0lJr2c)
+
 ---
 
 ## 📌 Funcionalidades
