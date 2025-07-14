@@ -14,6 +14,8 @@ Este repositório apresenta um projeto backend com autenticação de usuários c
 - Estrutura modular e extensível
 - Envio de e-mails para verificação e recuperação
 - Integração com Redis para sessões e bloqueio de IPs
+- Log para erros internos em arquivo texto
+- Log de auditoria de violações em banco de dados
 
 ### 📡 Endpoints Disponíveis
 
@@ -57,6 +59,7 @@ Essas rotas exigem o envio do token JWT no header `Authorization: Bearer <token>
 - **Express-rate-limit / rate-limit-redis** – Proteção contra força bruta
 - **Moment.js** – Manipulação de datas
 - **CORS** – Controle de origem nas requisições
+- **Winston** - Controle de arquivos de log
 - **Nodemon** – Monitoramento durante o desenvolvimento
 
 ---
@@ -89,6 +92,7 @@ Este projeto utiliza **MySQL** como banco de dados principal. Os scripts SQL est
 | `usuarios`               | Cadastro de usuários (nome, email, senha, etc.)                    |
 | `usuariostokens`         | Armazena tokens de verificação e recuperação de senha              |
 | `usuariostokenssessao`   | Controla sessões ativas e reforça a segurança em múltiplos logins  |
+| `violacoesacesso`        | Controla as violações de acesso, tentativas de login e requisição  |
 
 ---
 
