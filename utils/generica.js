@@ -1,4 +1,5 @@
 const moment = require('moment');
+const { gerarLog } = require('./log');
 
 module.exports = {
 
@@ -52,9 +53,11 @@ module.exports = {
         }
 
         let erroMensagem = msg;
-        if (process.env.DEBUG === 'S') {
-            erroMensagem += ` - ${erro?.message || erro || "Erro não tratado!"}`;
+        erroMensagem += ` - ${erro?.message || erro || "Erro não tratado!"}`;
 
+        gerarLog.error(erroMensagem, { stack: erro?.stack })
+
+        if (process.env.DEBUG === 'S') {
             console.log(moment().format('YYYY-MM-DD HH:mm:ss') + ' : ' + erroMensagem);
             console.log(erroMensagem);
             console.trace();

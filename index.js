@@ -1,17 +1,19 @@
 /*
  # MODULOS UTILIZADOS #
-    express             -   Servidor HTTP para API
-    express-rate-limit  -   Controle de acessos, força bruta por exemplo
-    rate-limit-redis    -   Controle para trabalhar com redis, usar por exemplo um bloqueio de banimento armazenando os IPs
-    ioredis             -   Controle do redis
-    knex                -   Comunicação com banco de dados
-    mysql2              -   lib do mysql
-    cors                -   Valida a origem das requisições
-    jsonwebtoken        -   Utilitário para geração do token JWT mais moderno e seguro
-    bcrypt, crypto      -   Utilitarios de criptografia
-    moment              -   Manipulação de data e hora
+    express                     -   Servidor HTTP para API
+    express-rate-limit          -   Controle de acessos, força bruta por exemplo
+    rate-limit-redis            -   Controle para trabalhar com redis, usar por exemplo um bloqueio de banimento armazenando os IPs
+    ioredis                     -   Controle do redis
+    knex                        -   Comunicação com banco de dados
+    mysql2                      -   lib do mysql
+    cors                        -   Valida a origem das requisições
+    jsonwebtoken                -   Utilitário para geração do token JWT mais moderno e seguro
+    bcrypt, crypto              -   Utilitarios de criptografia
+    moment                      -   Manipulação de data e hora
+    winston                     -   Controle de arquivos de log
+    winston-daily-rotate-file   -   Controle para rotacionar arquivos de log
 
-    nodemon             -   Somente em desenvolvimento
+    nodemon                     -   Somente em desenvolvimento
     
  # PASTAS #
     api                 -   Contem as APIs e as rotinas efetivas da aplicação. Separado por subpastas uma para cada API exemplo "usuario" e dentro temos service, controller e routes
@@ -46,6 +48,9 @@ require('./tasks/limparTokensExpirados');
 
 // Agenda a tarefa de limpeza de sessoes
 require('./tasks/limparSessoesExpiradas');
+
+// Agenda a tarefa de limpeza das violacoes
+require('./tasks/limparViolacoesAcesso');
 
 // Inicializar servidor
 const PORT = process.env.SERVER_PORT || 3000;

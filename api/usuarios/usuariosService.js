@@ -299,6 +299,29 @@ const revogarToken = async (jti) => {
     }, "Erro interno ao encerrar sessão.");
 };
 
+/**
+ * Inclui registro de violação.
+ *
+ * @param {Request} req - Dados da requisição.
+ * @returns {object} Dados da inclusão.
+ */
+const incluirViolacao = async (req, motivo) => {
+    return executarTransacao(async (trx) => {
+
+        const [novaViolacaoId] = await trx('violacoesacesso')
+            .insert({ 
+                ip: req.ip,
+                userAgent: req.headers['user-agent'],
+                rota: req.originalUrl,
+                metodo: req.method,
+                motivo,
+                data: db.fn.now()
+            });
+
+        return { status: 201, mensagem: "Violação incluida com sucesso!", idViolacao: novaViolacaoId };
+    },  "Erro interno ao incluir violação.");
+};
+
 module.exports = {
     listarUsuarios,
     buscarUsuario,
@@ -315,5 +338,6 @@ module.exports = {
     salvarToken,
     gerarTokenAutenticacao,
     verificarTokenAutenticacao,
-    revogarToken 
+    revogarToken,
+    incluirViolacao
 };

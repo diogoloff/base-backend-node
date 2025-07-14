@@ -3,6 +3,7 @@ const cors = require('cors');
 const usuariosService = require('../api/usuarios/usuariosService');
 const { verificarToken } = require('../utils/cript');
 const { resErroClient } = require('../utils/retornoHttp');
+const { registrarViolacao } = require('../api/usuarios/usuariosController');
 
 const configurarMiddleware = (app) => {
     // Transformar o body em JSON e permitir URLs codificadas
@@ -38,17 +39,17 @@ const middlewareAutenticacao = async  (req, res, next) => {
         const sessao = await usuariosService.verificarTokenAutenticacao(decoded.jti);
         if (!sessao) {
             // Emite um alerta no console de tentativa de conexão de token revogado,
-            // isto poderia evoluir para um log em tabela, arquivo e até ter um painel de auditoria
-            console.warn(`[${new Date().toISOString()}] Token revogado usado — JTI: ${decoded.jti}, IP: ${req.ip}`);
-
+            // isto poderia evoluir para um painel de auditoria
+            await registrarViolacao(req, `Token revogado usado — JTI: ${decoded.jti}`);
+           
             return resErroClient(res, "Sessão inválida ou expirada.", 401);    
         }
 
         if (sessao.ipOrigem !== req.ip || sessao.userAgent !== req.headers['user-agent']) {
-            console.warn(`Tentativa de uso de token com origem diferente. IP esperado: ${sessao.ipOrigem}, recebido: ${req.ip}`);
-
             // Emite um alerta no console de token utilizado por outra forma tipo interceptado,
-            // isto poderia evoluir para um log em tabela, arquivo e até ter um painel de auditoria
+            // isto poderia evoluir para um painel de auditoria
+            await registrarViolacao(req, `Tentativa de uso de token com origem diferente. IP esperado: ${sessao.ipOrigem}`);
+
             return res.status(401).json({ mensagem: 'Token utilizado de origem não reconhecida.' });
         }
 
@@ -67,6 +68,7 @@ const middlewareUsuarioAdmin = async (req, res, next) => {
     const retorno = await usuariosService.buscarUsuario(usuarioLogado.id);
 
     if (!retorno || !retorno.usuario || !retorno.usuario.usuarioAdmin || !retorno.usuario.ativo) {
+        await registrarViolacao(req, "Acesso negado. Tentativa de ação ADMIN.");
         return resErroClient(res, "Acesso negado. Você não tem permissão para executar esta ação.", 403);
     }
 

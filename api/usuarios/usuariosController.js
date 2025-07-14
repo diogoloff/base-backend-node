@@ -631,6 +631,17 @@ const logoutUsuario = async (req, res) => {
     }
 };
 
+/**
+ * Função responsável por registrar violações.
+ */
+const registrarViolacao = async (req, motivo) => {
+    try {
+        await usuariosService.incluirViolacao(req, motivo)
+    } catch (erro) {
+        resErroServer(res, trataErro(erro, "Erro ao incluir violação."));
+    }
+};
+
 module.exports = {
     listarUsuarios,
     buscarUsuario,
@@ -643,5 +654,6 @@ module.exports = {
     solicitarRedefinirSenha,
     redefinirSenha,
     loginUsuario,
-    logoutUsuario
+    logoutUsuario,
+    registrarViolacao
 };

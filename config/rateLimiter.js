@@ -1,6 +1,7 @@
 const rateLimit = require('express-rate-limit');
 const { RedisStore } = require('rate-limit-redis');
 const Redis = require('ioredis');
+const { registrarViolacao } = require('../api/usuarios/usuariosController');
 
 const redisClient = new Redis();
 
@@ -20,6 +21,7 @@ const limitarRequisicoesPublico = rateLimit({
         await redisClient.incr(key); // incrementa as tentativas
         await redisClient.expire(key, 60 * 60); // 1h de banimento
 
+        await registrarViolacao(req, "Excedeu limite de requisições");
         return res.status(429).json({
             mensagem: "Limite atingido. Aguarde 10 minutos para tentar novamente."
         });
@@ -32,6 +34,7 @@ const verificarPenalidade = async (req, res, next) => {
     const violacoes = parseInt(await redisClient.get(key)) || 0;
 
     if (violacoes >= 3) {
+        await registrarViolacao(req, "Excedeu limite de tentativas");
         return res.status(429).json({
             mensagem: "Você excedeu o número de tentativas. Tente novamente em 1 hora."
         });
